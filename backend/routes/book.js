@@ -5,5 +5,7 @@ const router = express.Router();
 //http://localhost:3001/api/book/registerbook
 router.post("/registerBook", book.registerBook);
 router.get("/listBook", book.listBook);
+router.put("/updateBook", book.updateBook);
+router.delete("/deleteBook/:_id", book.deleteBook);
 
 export default router;

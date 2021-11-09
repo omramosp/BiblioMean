@@ -27,4 +27,30 @@ const listSupplier = async (req, res) => {
   //return !roleSchema || roleSchema.length == 0 ? res.status(400).send("Empty role list") :  res.status(200).send({ roleSchema });
 };
 
-export default { registerSupplier, listSupplier };
+const updateSupplier = async (req, res) => {
+  if (!req.body.name || !req.body.address)
+    return res.status(400).send("Incomplete data");
+
+  const existingSupplier = await supplier.findOne({
+    name: req.body.name,
+    address: req.body.address,
+  });
+  if (existingSupplier) return res.status(400).send("The Supplier already exist");
+
+  const supplierUpdate = await supplier.findByIdAndUpdate(req.body._id, {
+    name: req.body.name,
+    address: req.body.address,
+  });
+  return !supplierUpdate
+    ? res.status(400).send("Error editing supplier")
+    : res.status(200).send({ supplierUpdate });
+};
+
+const deleteSupplier = async (req, res) => {
+  const supplierDelete = await supplier.findByIdAndDelete({ _id: req.params["_id"] });
+  !supplierDelete
+    ? res.status(400).send("Supplier not found")
+    : res.status(200).send("Supplier delete");
+};
+
+export default { registerSupplier, listSupplier, updateSupplier, deleteSupplier };
