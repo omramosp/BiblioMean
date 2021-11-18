@@ -18,7 +18,7 @@ const registerBook = async (req, res) => {
 
   const result = await bookSchema.save();
   console.log(result);
-  if (!result) return res.status(400).send("Failed to register role");
+  if (!result) return res.status(400).send("Failed to register book");
 
   return res.status(200).send({ result });
 };
@@ -58,5 +58,11 @@ const deleteBook = async (req, res) => {
     : res.status(200).send("Book delete");
 };
 
+const findBook = async (req, res) => {
+  const bookId = await book.findById({ _id: req.params["_id"] });
+  return !bookId
+    ? res.status(400).send({ message: "No search results" })
+    : res.status(200).send({ bookId });
+};
 
-export default { registerBook, listBook, updateBook, deleteBook };
+export default { registerBook, listBook, updateBook, deleteBook, findBook };
